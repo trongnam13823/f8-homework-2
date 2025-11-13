@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useReducer } from "react";
-import CartReducer from "./reducer";
 import CartContext from "./Context";
+import CartReducer from "../../pages/ShoppingCart/reducer";
 
 const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(CartReducer, {
