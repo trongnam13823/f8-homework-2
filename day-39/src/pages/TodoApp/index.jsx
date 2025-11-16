@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "../../libs/react-redux/hooks";
+import { useDispatch, useSelector } from "../../libs/react-redux/";
 import { ADD_TODO, DELETE_TODO, EDIT_TODO } from "../../store/constants";
 
 export default function TodoApp() {
