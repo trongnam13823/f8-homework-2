@@ -2,9 +2,9 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
+import Register from "./pages/Auth/Register";
+import Login from "./pages/Auth/Login";
+import Home from "./pages/Auth/Home";
 import GuestRoute from "./components/GuestRoute";
 
 function App() {

@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useRegisterMutation } from "../services/auth";
+import { useRegisterMutation } from "../../services/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import registerSchema from "../schemas/registerSchema";
-import AuthLayout from "../layouts/AuthLayout";
-import InputField from "../components/InputField";
+import registerSchema from "../../schemas/registerSchema";
+import AuthLayout from "../../layouts/AuthLayout";
+import InputField from "../../components/InputField";
 
 function Register() {
   const navigate = useNavigate();

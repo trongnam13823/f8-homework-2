@@ -1,12 +1,12 @@
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../services/auth";
+import { useLoginMutation } from "../../services/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import loginSchema from "../schemas/loginSchema";
-import { setCredentials } from "../features/auth/authSlice";
-import AuthLayout from "../layouts/AuthLayout";
-import InputField from "../components/InputField";
+import loginSchema from "../../schemas/loginSchema";
+import { setCredentials } from "../../features/auth/authSlice";
+import AuthLayout from "../../layouts/AuthLayout";
+import InputField from "../../components/InputField";
 
 function Login() {
   const navigate = useNavigate();
