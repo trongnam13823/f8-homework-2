@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./pages/Auth/Register";
 import Login from "./pages/Auth/Login";
-import Home from "./pages/Auth/Home";
+
 import GuestRoute from "./components/GuestRoute";
+import Home from "./pages/Home";
 
 function App() {
   return (
