@@ -12,5 +12,4 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
-  base: "/day-42/",
 });

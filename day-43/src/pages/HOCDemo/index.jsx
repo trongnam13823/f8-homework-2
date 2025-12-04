@@ -3,8 +3,8 @@ import UserProfile from "./components/UserProfile";
 import ProductList from "./components/ProductList";
 
 const HOCDemo = () => {
-  const [userLoading, setUserLoading] = useState(true);
-  const [productLoading, setProductLoading] = useState(true);
+  const [userLoading, setUserLoading] = useState(false);
+  const [productLoading, setProductLoading] = useState(false);
 
   return (
     <div className="max-w-4xl mx-auto p-6">
