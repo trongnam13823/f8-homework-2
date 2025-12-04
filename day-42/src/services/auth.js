@@ -1,23 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { createBaseQuery } from "./createBaseQuery";
 
 const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://api01.f8team.dev/api",
-    prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token;
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery: createBaseQuery("/auth"),
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (credentials) => {
         const [firstName, ...lastNameParts] = credentials.fullName.trim().split(" ");
         return {
-          url: "/auth/register",
+          url: "/register",
           method: "POST",
           body: {
             firstName: firstName || "User",
@@ -31,16 +23,19 @@ const authApi = createApi({
     }),
     login: builder.mutation({
       query: (credentials) => ({
-        url: "/auth/login",
+        url: "/login",
         method: "POST",
         body: credentials,
       }),
     }),
     getCurrentUser: builder.query({
-      query: () => "/auth/me",
+      query: () => "/me",
+    }),
+    getDevices: builder.query({
+      query: () => "/devices",
     }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetCurrentUserQuery } = authApi;
+export const { useRegisterMutation, useLoginMutation, useGetCurrentUserQuery, useGetDevicesQuery } = authApi;
 export default authApi;

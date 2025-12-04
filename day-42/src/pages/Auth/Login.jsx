@@ -19,12 +19,17 @@ function Login() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "trantrongnam@gmail.com",
+      password: "matkhau.",
+    },
   });
 
   const onSubmit = async (data) => {
     try {
       const result = await login(data).unwrap();
-      dispatch(setCredentials({ access_token: result.data.access_token }));
+      console.log(result);
+      dispatch(setCredentials(result));
       navigate("/");
     } catch (err) {
       console.error("Login failed:", err);

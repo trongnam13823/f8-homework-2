@@ -7,6 +7,8 @@ import Login from "./pages/Auth/Login";
 
 import GuestRoute from "./components/GuestRoute";
 import Home from "./pages/Home";
+import HOCDemo from "./pages/HOCDemo";
+import RenderPropsDemo from "./pages/RenderPropsDemo";
 
 function App() {
   return (
@@ -37,6 +39,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/hoc" element={<HOCDemo />} />
+          <Route path="/render-props" element={<RenderPropsDemo />} />
         </Routes>
       </BrowserRouter>
     </Provider>
