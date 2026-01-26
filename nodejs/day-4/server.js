@@ -1,8 +1,8 @@
 require('dotenv').config();
 const express = require('express');
-const responseFormat = require('./middlewares/responseFormat');
-const exceptionHandler = require('./middlewares/exceptionHandler');
-const notFoundHandler = require('./middlewares/notFoundHandler');
+const responseFormat = require('./src/middlewares/responseFormat');
+const exceptionHandler = require('./src/middlewares/exceptionHandler');
+const notFoundHandler = require('./src/middlewares/notFoundHandler');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(responseFormat);
 
-app.use('/posts', require('./routes/postRoutes'));
+app.use('/posts', require('./src/routes/postRoutes'));
 
 app.use(notFoundHandler);
 app.use(exceptionHandler);
