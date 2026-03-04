@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql8_day7
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: namtran138
+      MYSQL_DATABASE: day7
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

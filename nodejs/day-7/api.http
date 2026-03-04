@@ -1,0 +1,145 @@
+@baseUrl = http://localhost:3000/api/v1
+@accessToken = {{login.response.body.data.accessToken}}
+@refreshToken = {{login.response.body.data.refreshToken}}
+
+### =============================================
+### 🏠 Root
+### =============================================
+
+GET http://localhost:3000
+
+### =============================================
+### 🔐 AUTH
+### =============================================
+
+### Register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "email": "namttf8@fullstack.edu.vn",
+    "password": "123456"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "namttf8@fullstack.edu.vn",
+    "password": "123456"
+}
+
+### Verify Email
+POST {{baseUrl}}/auth/verify-email
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTc3MjYzNzUxNSwiZXhwIjoxNzcyNjQ0NzE1fQ.nALFbCCc7DzGzfUiIgQscntt4ZOsF_YwjYaAgfAaZhc"
+}
+
+
+### Refresh Token
+POST {{baseUrl}}/auth/refresh-token
+Content-Type: application/json
+
+{
+    "refresh_token": "{{refreshToken}}"
+}
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "refresh_token": "{{refreshToken}}"
+}
+
+### =============================================
+### 📝 TODOS
+### =============================================
+
+### Get All Todos
+GET {{baseUrl}}/todos
+
+### Get Todo By Id
+GET {{baseUrl}}/todos/1
+
+### Create Todo (requires auth)
+POST {{baseUrl}}/todos
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "title": "Learn Node.js",
+    "description": "Study Express and MySQL"
+}
+
+### Update Todo (requires auth)
+PUT {{baseUrl}}/todos/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "title": "Learn Node.js (updated)",
+    "completed": true
+}
+
+### Delete Todo (requires auth)
+DELETE {{baseUrl}}/todos/1
+Authorization: Bearer {{accessToken}}
+
+### =============================================
+### ❌ ERROR CASES
+### =============================================
+
+### Register - Missing email
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "password": "123456"
+}
+
+### Register - Password too short
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "email": "test2@example.com",
+    "password": "123456"
+}
+
+### Login - Wrong password
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "test2@example.com",
+    "password": "123456"
+}
+
+### Create Todo - Missing title
+POST {{baseUrl}}/todos
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "description": "No title provided"
+}
+
+### Get Todo - Invalid ID
+GET {{baseUrl}}/todos/abc
+
+### Access protected route without token
+POST {{baseUrl}}/todos
+Content-Type: application/json
+
+{
+    "title": "Should fail"
+}
+
+### 404 - Route not found
+GET {{baseUrl}}/nonexistent
