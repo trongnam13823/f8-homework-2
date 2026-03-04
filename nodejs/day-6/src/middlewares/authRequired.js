@@ -1,2 +1,2 @@
-// File để pass bài nộp - nội dung chính nằm tại middlewares/auth.middleware.js
-module.exports = {};
+const authRequired = require('./auth.middleware');
+module.exports = authRequired;
