@@ -26,6 +26,14 @@ class UserModel {
         );
         return result.affectedRows > 0;
     }
+
+    static async updatePassword(userId, hashedPassword) {
+        const [result] = await db.query(
+            'UPDATE users SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+            [hashedPassword, userId]
+        );
+        return result.affectedRows > 0;
+    }
 }
 
 module.exports = UserModel;

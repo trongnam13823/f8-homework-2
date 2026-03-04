@@ -37,6 +37,15 @@ class MailService {
             { verificationLink }
         );
     }
+
+    async sendPasswordChangedEmail(to, changedAt) {
+        return this.sendMail(
+            to,
+            'Security Alert: Your Password Was Changed',
+            'auth/password-changed',
+            { changedAt }
+        );
+    }
 }
 
 module.exports = new MailService();

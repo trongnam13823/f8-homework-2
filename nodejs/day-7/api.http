@@ -39,6 +39,17 @@ Content-Type: application/json
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTc3MjYzNzUxNSwiZXhwIjoxNzcyNjQ0NzE1fQ.nALFbCCc7DzGzfUiIgQscntt4ZOsF_YwjYaAgfAaZhc"
 }
 
+### Change Password
+POST {{baseUrl}}/auth/change-password
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "oldPassword": "12345678",
+    "newPassword": "123456",
+    "confirmPassword": "123456"
+}
+
 
 ### Refresh Token
 POST {{baseUrl}}/auth/refresh-token

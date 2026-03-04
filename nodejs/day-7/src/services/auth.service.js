@@ -38,7 +38,7 @@ class AuthService {
         const verificationToken = this.generateVerificationToken(user.id);
         const verificationLink = `${process.env.FRONTEND_URL}?token=${verificationToken}`;
 
-        // Push to queue instead of sending directly
+        // Push to queue
         await JobModel.create('sendVerificationEmail', {
             email,
             verificationLink
@@ -47,9 +47,8 @@ class AuthService {
         const accessToken = this.generateAccessToken(user.id);
         const refreshToken = this.generateRefreshToken(user.id);
 
-        // Store refresh token in DB
         const expiresAt = new Date();
-        expiresAt.setDate(expiresAt.getDate() + 7); // 7 days
+        expiresAt.setDate(expiresAt.getDate() + 7);
         await RefreshTokenModel.create(user.id, refreshToken, expiresAt);
 
         return { user, accessToken, refreshToken };
@@ -126,6 +125,38 @@ class AuthService {
             }
             throw new ApiError('Invalid verification token', 400);
         }
+    }
+
+    static async changePassword(userId, { oldPassword, newPassword }) {
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            throw new ApiError('User not found', 404);
+        }
+
+        // Verify old password
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            throw new ApiError('Incorrect current password', 400);
+        }
+
+        // Don't allow same password
+        const isSame = await bcrypt.compare(newPassword, user.password);
+        if (isSame) {
+            throw new ApiError('New password cannot be the same as old password', 400);
+        }
+
+        // Update password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await UserModel.updatePassword(userId, hashedPassword);
+
+        // Push security email to queue
+        const changedAt = new Date().toLocaleString();
+        await JobModel.create('sendPasswordChangeEmail', {
+            email: user.email,
+            changedAt
+        });
+
+        return { message: 'Password changed successfully' };
     }
 }
 

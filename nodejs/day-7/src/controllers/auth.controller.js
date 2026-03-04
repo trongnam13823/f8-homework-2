@@ -31,9 +31,16 @@ class AuthController {
 
     static async verifyEmail(req, res) {
         const { token } = req.body;
-
         const result = await AuthService.verifyEmail(token);
         return res.success(result, 'Email verified successfully');
+    }
+
+    static async changePassword(req, res) {
+        const userId = req.user.id;
+        const { oldPassword, newPassword } = req.body;
+
+        const result = await AuthService.changePassword(userId, { oldPassword, newPassword });
+        return res.success(result, 'Password changed successfully');
     }
 }
 
