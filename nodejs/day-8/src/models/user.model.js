@@ -1,0 +1,39 @@
+const db = require('@/config/db.config');
+
+class UserModel {
+    static async create(email, hashedPassword) {
+        const [result] = await db.query(
+            'INSERT INTO users (email, password) VALUES (?, ?)',
+            [email, hashedPassword]
+        );
+        return { id: result.insertId, email };
+    }
+
+    static async findByEmail(email) {
+        const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        return rows[0];
+    }
+
+    static async findById(id) {
+        const [rows] = await db.query('SELECT * FROM users WHERE id = ?', [id]);
+        return rows[0];
+    }
+
+    static async updateVerifiedAt(userId) {
+        const [result] = await db.query(
+            'UPDATE users SET verified_at = CURRENT_TIMESTAMP WHERE id = ?',
+            [userId]
+        );
+        return result.affectedRows > 0;
+    }
+
+    static async updatePassword(userId, hashedPassword) {
+        const [result] = await db.query(
+            'UPDATE users SET password = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+            [hashedPassword, userId]
+        );
+        return result.affectedRows > 0;
+    }
+}
+
+module.exports = UserModel;
