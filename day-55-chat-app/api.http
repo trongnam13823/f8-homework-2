@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:3000/api
+@email = test@example.com
+@password = secret_password
+
+### 1. Đăng ký (Register)
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "name": "Trần Nam",
+  "password": "{{password}}"
+}
+
+### 2. Đăng nhập (Login)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### (Lưu token từ response login để sử dụng cho các API cần Auth)
+@accessToken = {{login.response.body.data.accessToken}}
+
+### 3. Ví dụ gọi API yêu cầu Auth (Gắn accessToken tự động)
+# GET {{baseUrl}}/profile
+# Authorization: Bearer {{accessToken}}
