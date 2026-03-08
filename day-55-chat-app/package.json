@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "prm:m": "npx prisma migrate dev --name",
+    "prm:g": "npx prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.4.2",
