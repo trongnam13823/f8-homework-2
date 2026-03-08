@@ -1,6 +1,11 @@
 @baseUrl = http://localhost:3000/api
-@email = test@example.com
+@email = test3@example.com
+@name = test3
 @password = secret_password
+
+### ===========================
+### MODULE: AUTH
+### ===========================
 
 ### 1. Đăng ký (Register)
 # @name register
@@ -9,7 +14,7 @@ Content-Type: application/json
 
 {
   "email": "{{email}}",
-  "name": "Trần Nam",
+  "name": "{{name}}",
   "password": "{{password}}"
 }
 
@@ -26,6 +31,44 @@ Content-Type: application/json
 ### (Lưu token từ response login để sử dụng cho các API cần Auth)
 @accessToken = {{login.response.body.data.accessToken}}
 
-### 3. Ví dụ gọi API yêu cầu Auth (Gắn accessToken tự động)
-# GET {{baseUrl}}/profile
-# Authorization: Bearer {{accessToken}}
+### ===========================
+### MODULE: CONVERSATIONS
+### ===========================
+
+### 1. Tạo cuộc hội thoại (yêu cầu Auth)
+# @name createConversation
+POST {{baseUrl}}/conversations
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "type": "dm",
+  "users": [
+    "d3f3de5c-3323-47a0-a09e-0ab4109ce7f4"
+  ]
+}
+
+### 2. Lấy danh sách cuộc hội thoại của User (yêu cầu Auth)
+# @name getConversations
+GET {{baseUrl}}/conversations
+Authorization: Bearer {{accessToken}}
+
+@conversationId = 0a5e004c-c5d7-49f6-a757-dd9ac537e6d5
+
+### 3. Gửi tin nhắn mới vào cuộc hội thoại (yêu cầu Auth)
+# @name createMessage
+POST {{baseUrl}}/conversations/{{conversationId}}/messages
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "content": "Alooooo"
+}
+
+### 4. Lấy danh sách tin nhắn của một cuộc hội thoại (yêu cầu Auth)
+# Có thể truyền thêm query phân trang: ?limit=20&before=id_của_tin_nhắn_cũ_nhất_đang_có
+# Thay `your-conversation-id` bằng id thật của cuộc hội thoại
+
+# @name getMessages
+GET {{baseUrl}}/conversations/{{conversationId}}/messages?limit=2&before=6081c46a-267b-459c-b7df-19bf511e03f8
+Authorization: Bearer {{accessToken}}

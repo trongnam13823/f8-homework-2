@@ -1,13 +1,9 @@
 const prisma = require('@/lib/prisma');
 const { hashPassword, comparePassword } = require('@/utils/password');
-const jwtConfig = require('@/config/jwt.config');
-const jwt = require('jsonwebtoken');
+const { signAccessToken } = require('@/utils/jwt');
 const ApiError = require('@/utils/ApiError');
 
-const signAccessToken = (userId) => {
-    const { secret, expiresIn } = jwtConfig.accessToken;
-    return jwt.sign({ sub: userId }, secret, { expiresIn });
-};
+
 
 const register = async ({ email, name, password }) => {
     const existingUser = await prisma.user.findUnique({

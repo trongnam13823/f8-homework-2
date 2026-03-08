@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const routes = require('@/routes/index');
-const errorMiddleware = require('@/middlewares/error.middleware');
+const errorHandler = require('@/middlewares/errorHandler');
 
 const app = express();
 
@@ -20,6 +20,6 @@ app.use(morgan('dev'));
 app.use('/api', routes);
 
 // Global Error Handler
-app.use(errorMiddleware);
+app.use(errorHandler);
 
 module.exports = app;

@@ -1,8 +1,6 @@
 const response = require('@/utils/response');
 
-const errorMiddleware = (err, req, res, next) => {
-    console.error(err.stack); // Log for debugging
-
+const errorHandler = (err, req, res, next) => {
     if (err.name === 'ZodError') {
         return response.error(res, 'Validation Error', 400, err.errors);
     }
@@ -19,7 +17,7 @@ const errorMiddleware = (err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
 
-    return response.error(res, message, statusCode);
+    return response.error(res, message, statusCode, err.errors);
 };
 
-module.exports = errorMiddleware;
+module.exports = errorHandler;
