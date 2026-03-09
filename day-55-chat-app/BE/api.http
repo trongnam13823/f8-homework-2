@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3000/api
-@email = test3@example.com
-@name = test3
-@password = secret_password
+@email = test10@gmail.com
+@name = test10
+@password = test10@gmail.com
 
 ### ===========================
 ### MODULE: AUTH
@@ -71,4 +71,13 @@ Content-Type: application/json
 
 # @name getMessages
 GET {{baseUrl}}/conversations/{{conversationId}}/messages?limit=2&before=6081c46a-267b-459c-b7df-19bf511e03f8
+Authorization: Bearer {{accessToken}}
+
+### ===========================
+### MODULE: USERS
+### ===========================
+
+### 1. Tìm kiếm user theo email (yêu cầu Auth)
+# @name searchUser
+GET {{baseUrl}}/users/search?email=test
 Authorization: Bearer {{accessToken}}

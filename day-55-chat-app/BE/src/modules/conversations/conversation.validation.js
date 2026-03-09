@@ -5,6 +5,7 @@ const createConversationSchema = z.object({
     body: z.object({
         type: z.enum(Object.values(CONVERSATION_TYPE)),
         users: z.array(z.uuid()),
+        name: z.string().trim().min(1).optional(),
     }).superRefine((data, ctx) => {
         if (data.type === CONVERSATION_TYPE.DM && data.users.length !== 1) {
             ctx.addIssue({
@@ -13,12 +14,21 @@ const createConversationSchema = z.object({
                 path: ["users"],
             });
         }
-        if (data.type === CONVERSATION_TYPE.GROUP && data.users.length <= 1) {
-            ctx.addIssue({
-                code: "custom",
-                message: "When type is 'group', users array must have > 1 element",
-                path: ["users"],
-            });
+        if (data.type === CONVERSATION_TYPE.GROUP) {
+            if (!data.name) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: "When type is 'group', name is required",
+                    path: ["name"],
+                });
+            }
+            if (data.users.length <= 1) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: "When type is 'group', users array must have > 1 element",
+                    path: ["users"],
+                });
+            }
         }
     })
 });

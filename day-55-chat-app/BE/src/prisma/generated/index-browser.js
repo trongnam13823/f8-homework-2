@@ -132,6 +132,7 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.ConversationScalarFieldEnum = {
   id: 'id',
   type: 'type',
+  name: 'name',
   createdBy: 'createdBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -174,6 +175,7 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ConversationOrderByRelevanceFieldEnum = {
   id: 'id',
   type: 'type',
+  name: 'name',
   createdBy: 'createdBy',
   lastMessageId: 'lastMessageId'
 };

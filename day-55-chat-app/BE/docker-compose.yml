@@ -1,4 +1,17 @@
+version: "3"
+
 services:
+  soketi:
+    image: quay.io/soketi/soketi:latest
+    container_name: soketi
+    ports:
+      - "6001:6001"
+    environment:
+      SOKETI_DEBUG: "1"
+      SOKETI_DEFAULT_APP_ID: "app-id"
+      SOKETI_DEFAULT_APP_KEY: "app-key"
+      SOKETI_DEFAULT_APP_SECRET: "app-secret"
+
   mysql:
     image: mysql:8.0
     container_name: mysql8

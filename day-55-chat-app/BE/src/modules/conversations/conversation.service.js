@@ -24,14 +24,24 @@ const createMessage = async (userId, conversationId, content) => {
         });
 
         // Cập nhật lastMessageId và updatedAt của Cuộc hội thoại
-        await tx.conversation.update({
+        const conversation = await tx.conversation.update({
             where: { id: conversationId },
             data: {
                 lastMessageId: message.id,
             },
+            include: {
+                members: {
+                    select: {
+                        userId: true,
+                    },
+                },
+            },
         });
 
-        return message;
+        return {
+            message,
+            memberIds: conversation.members.map((m) => m.userId),
+        };
     });
 
     return result;
@@ -85,7 +95,7 @@ const getMessages = async (conversationId, limit = 20, before) => {
     };
 };
 
-const createConversation = async (creatorId, type, users) => {
+const createConversation = async (creatorId, type, users, name) => {
     // 1. Kiểm tra trường hợp DM (chat 1-1)
     if (type === CONVERSATION_TYPE.DM) {
         const otherUserId = users[0];
@@ -97,6 +107,20 @@ const createConversation = async (creatorId, type, users) => {
                     { members: { some: { userId: creatorId } } },
                     { members: { some: { userId: otherUserId } } },
                 ],
+            },
+            include: {
+                members: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true,
+                            },
+                        },
+                    },
+                    take: 2,
+                },
             },
         });
 
@@ -118,8 +142,23 @@ const createConversation = async (creatorId, type, users) => {
         data: {
             type,
             createdBy: creatorId,
+            name,
             members: {
                 create: members,
+            },
+        },
+        include: {
+            members: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                        },
+                    },
+                },
+                take: 2,
             },
         },
     });
@@ -135,12 +174,39 @@ const getConversations = async (userId) => {
                     userId,
                 },
             },
-            lastMessageId: {
-                not: null,
-            },
+            OR: [
+                {
+                    type: CONVERSATION_TYPE.DM,
+                    lastMessageId: { not: null },
+                },
+                {
+                    type: CONVERSATION_TYPE.GROUP,
+                },
+            ]
         },
         include: {
-            lastMessage: true,
+            lastMessage: {
+                include: {
+                    sender: {
+                        select: {
+                            id: true,
+                            name: true,
+                        },
+                    },
+                },
+            },
+            members: {
+                include: {
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                        },
+                    },
+                },
+                take: 2,
+            },
         },
         orderBy: {
             updatedAt: 'desc',
